@@ -1,8 +1,9 @@
 <template>
   <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png" />
     <div>
-      <router-link to="/dashboard">Dashboard</router-link> |
-      <router-link to="/grid-system">Grid System</router-link>
+      <router-link to="/dashboard">Login</router-link> |
+      <router-link to="/grid-system">Register</router-link>
     </div>
     <router-view />
   </div>
