@@ -40,11 +40,11 @@ export default {
           password: hashedPassword,
         })
         console.log(response) // 서버 응답 확인
-        alert("회원가입 성공")
+        alert("회원가입에 성공하였습니다. 로그인을 해주세요.")
         this.$router.push("/")
       } catch (error) {
-        alert("회원가입에 실패하였습니다." + `\n` + error)
         console.error(error)
+        alert("회원가입에 실패하였습니다." + `\n` + error.response.data)
       }
     },
   },
