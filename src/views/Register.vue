@@ -24,7 +24,7 @@ export default {
       userEmail: "",
       password: "",
       message: "",
-      secretKey: `${process.env.CRYPTO_KEY}`,
+      secretKey: `${process.env.VUE_APP_CRYPTO_KEY}`,
     }
   },
   methods: {
@@ -34,13 +34,6 @@ export default {
         JSON.stringify(hash),
         this.secretKey
       ).toString()
-      alert(hashedPassword, "암호화된 비밀번호")
-      alert(
-        CryptoJS.AES.decrypt(hashedPassword, this.secretKey).toString(
-          CryptoJS.enc.Utf8
-        ),
-        "복호화된 비밀번호"
-      )
       try {
         const response = await axios.post("http://localhost:3001/signUp", {
           userEmail: this.userEmail,
