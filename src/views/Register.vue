@@ -41,6 +41,7 @@ export default {
         })
         console.log(response) // 서버 응답 확인
       } catch (error) {
+        alert("회원가입에 실패하였습니다." + `\n` + error.response.data)
         console.error(error)
       }
     },

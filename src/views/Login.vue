@@ -24,12 +24,16 @@ export default {
       userEmail: "",
       password: "",
       message: "",
+      secretKey: `${process.env.VUE_APP_CRYPTO_KEY}`,
     }
   },
   methods: {
     async submitForm() {
       let hash = this.password
-      const hashedPassword = await CryptoJS.SHA256(hash)
+      const hashedPassword = await CryptoJS.AES.encrypt(
+        JSON.stringify(hash),
+        this.secretKey
+      ).toString()
       try {
         const response = await axios.post("http://localhost:3001/signIn", {
           userEmail: this.userEmail,
@@ -37,6 +41,7 @@ export default {
         })
         console.log(response) // 서버 응답 확인
       } catch (error) {
+        alert("로그인에 실패하였습니다." + `\n` + error.response.data)
         console.error(error)
       }
     },
