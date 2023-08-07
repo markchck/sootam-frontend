@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
-    <div>
+    <div v-if="this.accessToken">로그인 성공</div>
+    <div v-else>
       <router-link to="/login">Login</router-link> |
       <router-link to="/register">Register</router-link>
     </div>
@@ -13,6 +14,11 @@
 export default {
   name: "App",
   components: {},
+  data() {
+    return {
+      accessToken: this.$store.state.accessToken,
+    }
+  },
 }
 </script>
 

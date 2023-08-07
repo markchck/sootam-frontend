@@ -15,6 +15,7 @@
 <script>
 import axios from "axios"
 import CryptoJS from "crypto-js"
+import { mapMutations } from "vuex"
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -28,6 +29,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["setAccessToken"]),
     async submitForm() {
       let hash = this.password
       const hashedPassword = await CryptoJS.AES.encrypt(
@@ -39,7 +41,8 @@ export default {
           userEmail: this.userEmail,
           password: hashedPassword,
         })
-        console.log(response) // 서버 응답 확인
+        this.setAccessToken(response.data.stsTokenManager.accessToken)
+        this.$router.push("/")
       } catch (error) {
         alert("로그인에 실패하였습니다." + `\n` + error.response.data)
         console.error(error)
