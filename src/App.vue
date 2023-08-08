@@ -1,18 +1,20 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <div v-if="this.$store.state.accessToken">
-      로그인 성공
-      <Search></Search>
-    </div>
+  <v-app>
+    <div id="app">
+      <img alt="Vue logo" src="./assets/logo.png" />
+      <div v-if="this.$store.state.accessToken">
+        로그인 성공
+        <Search></Search>
+      </div>
 
-    <div v-else>
-      로그인 이전
-      <router-link to="/login">Login</router-link> |
-      <router-link to="/register">Register</router-link>
+      <div v-else>
+        로그인 이전
+        <router-link to="/login">Login</router-link> |
+        <router-link to="/register">Register</router-link>
+      </div>
+      <router-view />
     </div>
-    <router-view />
-  </div>
+  </v-app>
 </template>
 
 <script>
