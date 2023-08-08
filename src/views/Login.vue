@@ -41,6 +41,7 @@ export default {
           userEmail: this.userEmail,
           password: hashedPassword,
         })
+
         this.setAccessToken(response.data.stsTokenManager.accessToken)
         this.$router.push("/")
       } catch (error) {
