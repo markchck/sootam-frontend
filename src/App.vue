@@ -3,7 +3,6 @@
     <div id="app">
       <img alt="Vue logo" src="./assets/logo.png" />
       <div v-if="this.$store.state.accessToken">
-        로그인 성공
         <Search></Search>
       </div>
 
