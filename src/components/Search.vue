@@ -120,9 +120,12 @@ export default {
       }
     },
     async getSimilarProblems(problem) {
-      const { chatper = "", unitName = "" } = problem
+      const { chapter = "", unitName = "" } = problem
+      console.log(chapter)
+      console.log(unitName)
       const response = await axios.get(
-        `${process.env.VUE_APP_PROBLEM_API}/getSimilarProblems?chapter=${chatper}&unitName=${unitName}`
+        // `${process.env.VUE_APP_PROBLEM_API}/getSimilarProblems?chapter=${chatper}&unitName=${unitName}`
+        `http://localhost:4000/getSimilarProblems?chapter=${chapter}&unitName=${unitName}`
       )
       console.log(response)
     },
