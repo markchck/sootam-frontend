@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-card class="elevation-1">
-      <!-- <v-card-subtitle> 1,dd000 miles of wonder </v-card-subtitle> -->
       <v-expansion-panels>
         <v-expansion-panel>
           <v-expansion-panel-header
@@ -23,17 +22,10 @@
       :headers="headers"
       :items="similarProblems"
       :single-select="singleSelect"
-      item-key="name"
+      item-key="year"
       show-select
       class="elevation-1"
     >
-      <template v-slot:top>
-        <v-switch
-          v-model="singleSelect"
-          label="Single select"
-          class="pa-3"
-        ></v-switch>
-      </template>
     </v-data-table>
   </div>
 </template>
@@ -53,7 +45,6 @@ export default {
   },
   data() {
     return {
-      singleSelect: false,
       selected: [],
       headers: [
         {
@@ -67,7 +58,7 @@ export default {
         { text: "형", value: "testType" },
         { text: "문제 번호", value: "number" },
         { text: "정답률", value: "successRate" },
-        { text: "문제보기", value: "iron" },
+        { text: "문제보기", value: "pdf" },
       ],
     }
   },
