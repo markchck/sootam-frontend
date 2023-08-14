@@ -16,10 +16,12 @@
       </v-expansion-panels>
     </v-card>
 
+    <h3 class="d-flex mt-6">유사문제</h3>
+
     <v-data-table
       v-model="selected"
       :headers="headers"
-      :items="desserts"
+      :items="similarProblems"
       :single-select="singleSelect"
       item-key="name"
       show-select
@@ -58,31 +60,14 @@ export default {
           text: "년도",
           align: "start",
           sortable: true,
-          value: "name",
+          value: "year",
         },
-        { text: "월", value: "calories" },
-        { text: "출제 기관", value: "fat" },
-        { text: "형", value: "carbs" },
-        { text: "문제 번호", value: "protein" },
-        { text: "정답률", value: "iron" },
-      ],
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-          iron: 1,
-        },
-        {
-          name: "Ice cream sandwich",
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-          iron: 1,
-        },
+        { text: "월", value: "month" },
+        { text: "출제 기관", value: "copyright" },
+        { text: "형", value: "testType" },
+        { text: "문제 번호", value: "number" },
+        { text: "정답률", value: "successRate" },
+        { text: "문제보기", value: "iron" },
       ],
     }
   },
