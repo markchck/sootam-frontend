@@ -3,7 +3,7 @@
     <div id="app">
       <img alt="Vue logo" src="./assets/logo.png" />
       <div v-if="this.$store.state.accessToken">
-        <Search></Search>
+        <Search_problem></Search_problem>
       </div>
 
       <div v-else>
@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import Search from "@/components/Search.vue"
+import Search_problem from "@/components/Search_problem.vue"
 export default {
   name: "App",
   components: {
-    Search: Search,
+    Search_problem: Search_problem,
   },
   data() {
     return {

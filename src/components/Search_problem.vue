@@ -1,6 +1,9 @@
 <template>
-  <v-container fluid>
-    <v-row class="d-flex justify-center">
+  <v-container fluid mt-10>
+    <v-row
+      class="d-flex justify-center"
+      v-if="this.similarProblems.length === 0"
+    >
       <v-col cols="1">
         <v-combobox
           label="년도"
@@ -53,13 +56,29 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-row class="d-flex justify-center" v-else>
+      <Search_result
+        :similarProblems="similarProblems"
+        :selectedYear="selectedYear"
+        :selectedMonth="selectedMonth"
+        :selectedTestType="selectedTestType"
+        :selectedCopyright="selectedCopyright"
+        :selectedNumber="selectedNumber"
+        :selectedUnitName="selectedUnitName"
+        :selectedChapter="selectedChapter"
+      ></Search_result>
+    </v-row>
   </v-container>
 </template>
 <script>
 import axios from "axios"
+import Search_result from "@/components/Search_result.vue"
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
-  name: "Search",
+  name: "Search_problem",
+  components: {
+    Search_result: Search_result,
+  },
 
   data() {
     return {
@@ -104,15 +123,18 @@ export default {
       selectedTestType: "나",
       selectedCopyright: "평가원",
       selectedNumber: "9",
+      selectedChapter: "",
+      selectedUnitName: "",
+      similarProblems: [],
     }
   },
   methods: {
     async submit(year, month, testType, copyright, number) {
-      const response = await axios.get(
+      const { data = [] } = await axios.get(
         `http://localhost:4000/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&copyright=${copyright}&number=${number}`
         // `${process.env.VUE_APP_PROBLEM_API}/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&number=${number}&copyright=${copyright}`
       )
-      const { data = [] } = response
+
       if (data.length === 0) {
         alert("해당 문제가 존재하지 않습니다.")
       } else {
@@ -121,13 +143,17 @@ export default {
     },
     async getSimilarProblems(problem) {
       const { chapter = "", unitName = "" } = problem
-      console.log(chapter)
-      console.log(unitName)
-      const response = await axios.get(
+      this.selectedChapter = chapter
+      this.selectedUnitName = unitName
+      const { data = [] } = await axios.get(
         // `${process.env.VUE_APP_PROBLEM_API}/getSimilarProblems?chapter=${chatper}&unitName=${unitName}`
         `http://localhost:4000/getSimilarProblems?chapter=${chapter}&unitName=${unitName}`
       )
-      console.log(response)
+      if (data.length === 0) {
+        alert("해당 문제와 유사한 문제가 존재하지 않습니다.")
+      } else {
+        this.similarProblems = data
+      }
     },
   },
 }
