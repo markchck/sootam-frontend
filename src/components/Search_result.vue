@@ -21,11 +21,20 @@
       v-model="selected"
       :headers="headers"
       :items="similarProblems"
-      :single-select="singleSelect"
       item-key="year"
       show-select
       class="elevation-1"
     >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+          New Item
+        </v-btn>
+      </template>
+
+      <!-- eslint-disable-next-line vue/valid-v-slot-->
+      <template v-slot:item.pdf="{ item }">
+        <v-btn depressed x-small @click="editItem(item)"> 미리보기 </v-btn>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -61,6 +70,11 @@ export default {
         { text: "문제보기", value: "pdf" },
       ],
     }
+  },
+  methods: {
+    editItem(item) {
+      console.log(item)
+    },
   },
 }
 </script>
