@@ -16,24 +16,25 @@
     </v-card>
 
     <h3 class="d-flex mt-6">유사문제</h3>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="blue darken-1" text @click="downPdf(selected)">
+        PDF다운
+      </v-btn>
+    </v-card-actions>
+    <v-divider class="mt-2"></v-divider>
 
     <v-data-table
       v-model="selected"
       :headers="headers"
       :items="similarProblems"
-      item-key="year"
+      item-key="sk"
       show-select
       class="elevation-1"
     >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-          New Item
-        </v-btn>
-      </template>
-
       <!-- eslint-disable-next-line vue/valid-v-slot-->
       <template v-slot:item.pdf="{ item }">
-        <v-btn depressed x-small @click="editItem(item)"> 미리보기 </v-btn>
+        <v-btn depressed x-small @click="preview(item)"> 미리보기 </v-btn>
       </template>
     </v-data-table>
   </div>
@@ -69,11 +70,17 @@ export default {
         { text: "정답률", value: "successRate" },
         { text: "문제보기", value: "pdf" },
       ],
+      s3Url: `${process.env.VUE_APP_S3_URL}`,
     }
   },
   methods: {
-    editItem(item) {
+    preview(item) {
       console.log(item)
+    },
+    downPdf(items) {
+      items.forEach((item) => {
+        console.log(`${this.s3Url}/store/${item.problemImage}`)
+      })
     },
   },
 }
