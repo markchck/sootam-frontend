@@ -136,7 +136,6 @@ export default {
         }
       }
       let pdfBytes = await mergedPdf.save()
-      download(pdfBytes, "pdf-lib_modification_example.pdf", "application/pdf")
       download(
         pdfBytes,
         `${year}년 ${month}월 ${copyright} ${testType}형 ${number}번 유사문제`,
