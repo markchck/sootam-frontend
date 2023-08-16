@@ -40,6 +40,8 @@
   </div>
 </template>
 <script>
+import { PDFDocument } from "pdf-lib"
+import download from "downloadjs"
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Search_result",
@@ -71,6 +73,7 @@ export default {
         { text: "문제보기", value: "pdf" },
       ],
       s3Url: `${process.env.VUE_APP_S3_URL}`,
+      images: [],
     }
   },
   methods: {
@@ -79,8 +82,47 @@ export default {
     },
     downPdf(items) {
       items.forEach((item) => {
-        console.log(`${this.s3Url}/store/${item.problemImage}`)
+        this.images.push([
+          `${this.s3Url}/store/${item.problemImage}`,
+          `${this.s3Url}/store/${item.solutionImage}`,
+        ])
       })
+      this.mergeAllPDFs(this.images)
+      this.selected = []
+    },
+    async mergeAllPDFs(images) {
+      let mergedPdf = await PDFDocument.create()
+      const numDocs = images.length
+      for (var i = 0; i < numDocs; i++) {
+        const [problem, solution] = images[i]
+        const bufferedProblem = await fetch(problem).then((res) =>
+          res.arrayBuffer()
+        )
+        const bufferedSolution = await fetch(solution).then((res) =>
+          res.arrayBuffer()
+        )
+        const pdfProblem = await PDFDocument.load(bufferedProblem)
+        const pdfSolution = await PDFDocument.load(bufferedSolution)
+
+        const problemLength = pdfProblem.getPageCount()
+        const solutionLength = pdfSolution.getPageCount()
+
+        for (let j = 0; j < problemLength; j++) {
+          const [problemPage] = await mergedPdf.copyPages(pdfProblem, [j])
+          mergedPdf.addPage(problemPage)
+        }
+        for (let j = 0; j < solutionLength; j++) {
+          const [solutionPage] = await mergedPdf.copyPages(pdfSolution, [j])
+          mergedPdf.addPage(solutionPage)
+        }
+
+        let pdfBytes = await mergedPdf.save()
+        download(
+          pdfBytes,
+          "pdf-lib_modification_example.pdf",
+          "application/pdf"
+        )
+      }
     },
   },
 }
