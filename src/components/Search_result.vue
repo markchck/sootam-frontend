@@ -18,7 +18,20 @@
     <h3 class="d-flex mt-6">유사문제</h3>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" text @click="downPdf(selected)">
+      <v-btn
+        color="blue darken-1"
+        text
+        @click="
+          downPdf(
+            selected,
+            selectedYear,
+            selectedMonth,
+            selectedCopyright,
+            selectedTestType,
+            selectedNumber
+          )
+        "
+      >
         PDF다운
       </v-btn>
     </v-card-actions>
@@ -43,7 +56,6 @@
 import { PDFDocument } from "pdf-lib"
 import download from "downloadjs"
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "Search_result",
   props: {
     similarProblems: Array,
@@ -80,17 +92,24 @@ export default {
     preview(item) {
       console.log(item)
     },
-    downPdf(items) {
+    downPdf(items, year, month, copyright, testType, number) {
       items.forEach((item) => {
         this.images.push([
           `${this.s3Url}/store/${item.problemImage}`,
           `${this.s3Url}/store/${item.solutionImage}`,
         ])
       })
-      this.mergeAllPDFs(this.images)
+      this.mergeAndDownPdf(
+        this.images,
+        year,
+        month,
+        copyright,
+        testType,
+        number
+      )
       this.selected = []
     },
-    async mergeAllPDFs(images) {
+    async mergeAndDownPdf(images, year, month, copyright, testType, number) {
       let mergedPdf = await PDFDocument.create()
       const numDocs = images.length
       for (var i = 0; i < numDocs; i++) {
@@ -118,6 +137,11 @@ export default {
       }
       let pdfBytes = await mergedPdf.save()
       download(pdfBytes, "pdf-lib_modification_example.pdf", "application/pdf")
+      download(
+        pdfBytes,
+        `${year}년 ${month}월 ${copyright} ${testType}형 ${number}번 유사문제`,
+        "application/pdf"
+      )
     },
   },
 }
