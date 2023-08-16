@@ -115,14 +115,9 @@ export default {
           const [solutionPage] = await mergedPdf.copyPages(pdfSolution, [j])
           mergedPdf.addPage(solutionPage)
         }
-
-        let pdfBytes = await mergedPdf.save()
-        download(
-          pdfBytes,
-          "pdf-lib_modification_example.pdf",
-          "application/pdf"
-        )
       }
+      let pdfBytes = await mergedPdf.save()
+      download(pdfBytes, "pdf-lib_modification_example.pdf", "application/pdf")
     },
   },
 }
