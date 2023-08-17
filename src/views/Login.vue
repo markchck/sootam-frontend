@@ -1,15 +1,40 @@
 <template>
   <div id="app">
-    <form @submit.prevent="submitForm">
-      <label for="email">userEmail:</label>
-      <input type="email" v-model="userEmail" required />
-      <br />
-      <label for="password">Password:</label>
-      <input type="password" v-model="password" required />
-      <br />
-      <button type="submit">Login</button>
-    </form>
-    <p v-if="message">{{ message }}</p>
+    <v-sheet width="300" class="mx-auto">
+      <v-form ref="form">
+        <v-text-field
+          v-model="userEmail"
+          :rules="emailRules"
+          label="Email"
+          required
+        ></v-text-field>
+
+        <v-text-field
+          v-model="password"
+          :rules="passwordRules"
+          type="password"
+          label="password"
+          required
+        ></v-text-field>
+
+        <div class="d-flex flex-column">
+          <v-btn color="warning" class="mt-4" block @click="submitForm">
+            Login
+          </v-btn>
+        </div>
+        <div class="d-flex flex-column">
+          <v-btn
+            to="/register"
+            color="success"
+            class="mt-4"
+            block
+            @click="submitForm"
+          >
+            회원가입 하러가기
+          </v-btn>
+        </div>
+      </v-form>
+    </v-sheet>
   </div>
 </template>
 <script>
@@ -24,8 +49,13 @@ export default {
     return {
       userEmail: "",
       password: "",
-      message: "",
+
       secretKey: `${process.env.VUE_APP_CRYPTO_KEY}`,
+      emailRules: [
+        (v) => !!v || "입력해주세요",
+        (v) => /.+@.+\..+/.test(v) || "email을 입력해주세요",
+      ],
+      passwordRules: [(v) => !!v || "입력해주세요"],
     }
   },
   methods: {
