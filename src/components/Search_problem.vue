@@ -1,9 +1,6 @@
 <template>
   <v-container fluid mt-10>
-    <v-row
-      class="d-flex justify-center"
-      v-if="this.similarProblems.length === 0"
-    >
+    <v-row class="d-flex justify-center">
       <v-col cols="1">
         <v-combobox
           label="년도"
@@ -56,7 +53,10 @@
         </v-btn>
       </v-col>
     </v-row>
-    <v-row class="d-flex justify-center" v-else>
+    <v-row
+      class="d-flex justify-center"
+      v-if="this.similarProblems.length !== 0"
+    >
       <Search_result
         :similarProblems="similarProblems"
         :selectedYear="selectedYear"
@@ -128,7 +128,27 @@ export default {
       similarProblems: [],
     }
   },
+  watch: {
+    selectedMonth(newValue) {
+      if (newValue === "11") {
+        this.selectedCopyright = "수능"
+      } else if (newValue === "06" || newValue === "09") {
+        this.selectedCopyright = "평가원"
+      } else {
+        this.selectedCopyright = "교육청"
+      }
+    },
+  },
   methods: {
+    initialize() {
+      this.selectedYear = "2019"
+      this.selectedMonth = "06"
+      this.selectedTestType = "나"
+      this.selectedNumber = "9"
+      this.selectedChapter = ""
+      this.selectedUnitName = ""
+      this.similarProblems = []
+    },
     async submit(year, month, testType, copyright, number) {
       const { data = [] } = await axios.get(
         `http://localhost:4000/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&copyright=${copyright}&number=${number}`
@@ -137,6 +157,7 @@ export default {
 
       if (data.length === 0) {
         alert("해당 문제가 존재하지 않습니다.")
+        this.initialize()
       } else {
         this.getSimilarProblems(data[0])
       }
@@ -151,6 +172,7 @@ export default {
       )
       if (data.length === 0) {
         alert("해당 문제와 유사한 문제가 존재하지 않습니다.")
+        this.initialize()
       } else {
         this.similarProblems = data
       }

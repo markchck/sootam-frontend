@@ -5,12 +5,10 @@
         <v-expansion-panel>
           <v-expansion-panel-header
             >{{ selectedYear }}년 {{ selectedMonth }}월 {{ selectedCopyright }}
-            {{ selectedTestType }}형 {{ selectedNumber }}번
+            {{ selectedTestType }}형 {{ selectedNumber }}번 <br />
+            단원:{{ selectedChapter }} 유형: {{ selectedUnitName }}
           </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            단원:{{ selectedChapter }}<br />
-            유형: {{ selectedUnitName }}
-          </v-expansion-panel-content>
+          <v-expansion-panel-content> </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
     </v-card>
@@ -46,9 +44,9 @@
       class="elevation-1"
     >
       <!-- eslint-disable-next-line vue/valid-v-slot-->
-      <template v-slot:item.pdf="{ item }">
+      <!-- <template v-slot:item.pdf="{ item }">
         <v-btn depressed x-small @click="preview(item)"> 미리보기 </v-btn>
-      </template>
+      </template> -->
     </v-data-table>
   </div>
 </template>
@@ -57,6 +55,7 @@ import { PDFDocument } from "pdf-lib"
 import download from "downloadjs"
 export default {
   name: "Search_result",
+
   props: {
     similarProblems: Array,
     selectedYear: String,
@@ -82,7 +81,7 @@ export default {
         { text: "형", value: "testType" },
         { text: "문제 번호", value: "number" },
         { text: "정답률", value: "successRate" },
-        { text: "문제보기", value: "pdf" },
+        // { text: "문제보기", value: "pdf" },
       ],
       s3Url: `${process.env.VUE_APP_S3_URL}`,
       images: [],
