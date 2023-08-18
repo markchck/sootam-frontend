@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div id="app">
+    <!-- <div id="app">
       <img alt="Vue logo" src="./assets/logo.png" />
       <div v-if="this.$store.state.accessToken">
         <Search_problem></Search_problem>
@@ -12,17 +12,43 @@
         <router-link to="/register">Register</router-link>
       </div>
       <router-view />
-    </div>
+    </div> -->
+    <v-sheet width="300" class="mx-auto">
+      <img alt="Vue logo" src="./assets/logo.png" />
+      <div class="d-flex flex-column">
+        <v-btn
+          color="warning"
+          class="mt-4"
+          block
+          router
+          :to="{ name: 'Login' }"
+          exact
+        >
+          Login
+        </v-btn>
+      </div>
+      <div class="d-flex flex-column">
+        <v-btn
+          color="success"
+          class="mt-4"
+          block
+          router
+          :to="{ name: 'Register' }"
+        >
+          회원가입 하러가기
+        </v-btn>
+      </div>
+    </v-sheet>
   </v-app>
 </template>
 
 <script>
-import Search_problem from "@/components/Search_problem.vue"
+// import Search_problem from "@/components/Search_problem.vue"
 export default {
   name: "App",
-  components: {
-    Search_problem: Search_problem,
-  },
+  // components: {
+  //   Search_problem: Search_problem,
+  // },
   data() {
     return {
       accessToken: this.$store.state.accessToken,
