@@ -1,84 +1,110 @@
 <template>
-  <v-container fluid mt-10>
-    <v-row class="d-flex justify-center">
-      <v-col cols="1">
-        <v-combobox
-          label="년도"
-          :items="year"
-          v-model="selectedYear"
-        ></v-combobox>
-      </v-col>
-      <v-col cols="1">
-        <v-combobox
-          label="월"
-          :items="month"
-          v-model="selectedMonth"
-        ></v-combobox>
-      </v-col>
-      <v-col cols="1">
-        <v-combobox
-          label="기관"
-          :items="copyright"
-          v-model="selectedCopyright"
-        ></v-combobox>
-      </v-col>
-      <v-col cols="1">
-        <v-combobox
-          label="형"
-          :items="testType"
-          v-model="selectedTestType"
-        ></v-combobox>
-      </v-col>
-      <v-col cols="1">
-        <v-combobox
-          label="번호"
-          :items="number"
-          v-model="selectedNumber"
-        ></v-combobox>
-      </v-col>
-      <v-col cols="1" class="d-flex justify-center mt-3">
-        <v-btn
-          depressed
-          @click="
-            submit(
-              selectedYear,
-              selectedMonth,
-              selectedTestType,
-              selectedCopyright,
-              selectedNumber
-            )
-          "
-        >
-          검색
-        </v-btn>
-      </v-col>
-    </v-row>
-    <v-row
-      class="d-flex justify-center"
-      v-if="this.similarProblems.length !== 0"
-    >
-      <Search_result
-        :similarProblems="similarProblems"
-        :selectedYear="selectedYear"
-        :selectedMonth="selectedMonth"
-        :selectedTestType="selectedTestType"
-        :selectedCopyright="selectedCopyright"
-        :selectedNumber="selectedNumber"
-        :selectedUnitName="selectedUnitName"
-        :selectedChapter="selectedChapter"
-      ></Search_result>
-    </v-row>
-  </v-container>
+  <div>
+    <!-- 문제 검색 -->
+    <v-container fluid mt-10>
+      <v-row class="d-flex justify-center">
+        <v-col cols="1">
+          <v-combobox
+            label="년도"
+            :items="year"
+            v-model="selectedYear"
+          ></v-combobox>
+        </v-col>
+        <v-col cols="1">
+          <v-combobox
+            label="월"
+            :items="month"
+            v-model="selectedMonth"
+          ></v-combobox>
+        </v-col>
+        <v-col cols="1">
+          <v-combobox
+            label="기관"
+            :items="copyright"
+            v-model="selectedCopyright"
+          ></v-combobox>
+        </v-col>
+        <v-col cols="1">
+          <v-combobox
+            label="형"
+            :items="testType"
+            v-model="selectedTestType"
+          ></v-combobox>
+        </v-col>
+        <v-col cols="1">
+          <v-combobox
+            label="번호"
+            :items="number"
+            v-model="selectedNumber"
+          ></v-combobox>
+        </v-col>
+        <v-col cols="1" class="d-flex justify-center mt-3">
+          <v-btn
+            depressed
+            @click="
+              submit(
+                selectedYear,
+                selectedMonth,
+                selectedTestType,
+                selectedCopyright,
+                selectedNumber
+              )
+            "
+          >
+            검색
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <!-- 문제 결과 -->
+    <v-container v-if="similarProblems.length !== 0">
+      <v-card-title>
+        <h3 class="d-flex">유사문제</h3>
+        <v-spacer></v-spacer>
+        <v-card-actions mt-3>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="
+              downPdf(
+                selected,
+                selectedYear,
+                selectedMonth,
+                selectedCopyright,
+                selectedTestType,
+                selectedNumber
+              )
+            "
+          >
+            PDF다운
+          </v-btn>
+        </v-card-actions>
+      </v-card-title>
+      <v-divider></v-divider>
+
+      <v-data-table
+        v-model="selected"
+        :headers="headers"
+        :items="similarProblems"
+        item-key="sk"
+        show-select
+        class="elevation-1"
+      >
+        <!-- eslint-disable-next-line vue/valid-v-slot-->
+        <!-- <template v-slot:item.pdf="{ item }">
+        <v-btn depressed x-small @click="preview(item)"> 미리보기 </v-btn>
+      </template> -->
+      </v-data-table>
+    </v-container>
+  </div>
 </template>
 <script>
 import axios from "axios"
-import Search_result from "@/components/Search_result.vue"
+import { PDFDocument } from "pdf-lib"
+import download from "downloadjs"
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "Search_problem",
-  components: {
-    Search_result: Search_result,
-  },
 
   data() {
     return {
@@ -126,6 +152,23 @@ export default {
       selectedChapter: "",
       selectedUnitName: "",
       similarProblems: [],
+      selected: [],
+      headers: [
+        {
+          text: "년도",
+          align: "start",
+          sortable: true,
+          value: "year",
+        },
+        { text: "월", value: "month" },
+        { text: "출제 기관", value: "copyright" },
+        { text: "형", value: "testType" },
+        { text: "문제 번호", value: "number" },
+        { text: "정답률", value: "successRate" },
+        // { text: "문제보기", value: "pdf" },
+      ],
+      s3Url: `${process.env.VUE_APP_S3_URL}`,
+      images: [],
     }
   },
   watch: {
@@ -176,6 +219,59 @@ export default {
       } else {
         this.similarProblems = data
       }
+    },
+    preview(item) {
+      console.log(item)
+    },
+    downPdf(items, year, month, copyright, testType, number) {
+      items.forEach((item) => {
+        this.images.push([
+          `${this.s3Url}/store/${item.problemImage}`,
+          `${this.s3Url}/store/${item.solutionImage}`,
+        ])
+      })
+      this.mergeAndDownPdf(
+        this.images,
+        year,
+        month,
+        copyright,
+        testType,
+        number
+      )
+      this.selected = []
+    },
+    async mergeAndDownPdf(images, year, month, copyright, testType, number) {
+      let mergedPdf = await PDFDocument.create()
+      const numDocs = images.length
+      for (var i = 0; i < numDocs; i++) {
+        const [problem, solution] = images[i]
+        const bufferedProblem = await fetch(problem).then((res) =>
+          res.arrayBuffer()
+        )
+        const bufferedSolution = await fetch(solution).then((res) =>
+          res.arrayBuffer()
+        )
+        const pdfProblem = await PDFDocument.load(bufferedProblem)
+        const pdfSolution = await PDFDocument.load(bufferedSolution)
+
+        const problemLength = pdfProblem.getPageCount()
+        const solutionLength = pdfSolution.getPageCount()
+
+        for (let j = 0; j < problemLength; j++) {
+          const [problemPage] = await mergedPdf.copyPages(pdfProblem, [j])
+          mergedPdf.addPage(problemPage)
+        }
+        for (let j = 0; j < solutionLength; j++) {
+          const [solutionPage] = await mergedPdf.copyPages(pdfSolution, [j])
+          mergedPdf.addPage(solutionPage)
+        }
+      }
+      let pdfBytes = await mergedPdf.save()
+      download(
+        pdfBytes,
+        `${year}년 ${month}월 ${copyright} ${testType}형 ${number}번 유사문제`,
+        "application/pdf"
+      )
     },
   },
 }
