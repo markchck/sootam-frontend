@@ -59,7 +59,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setAccessToken"]),
+    ...mapMutations(["setAccessToken", "setStatus"]),
     async submitForm() {
       let hash = this.password
       const hashedPassword = await CryptoJS.AES.encrypt(
@@ -73,8 +73,8 @@ export default {
         })
 
         this.setAccessToken(response.data.stsTokenManager.accessToken)
-
-        this.$router.push("/")
+        this.setStatus("main")
+        this.$router.push("/main")
       } catch (error) {
         alert("로그인에 실패하였습니다." + `\n` + error.response.data)
         console.error(error)

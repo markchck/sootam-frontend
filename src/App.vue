@@ -1,20 +1,9 @@
 <template>
   <v-app>
-    <!-- <div id="app">
-      <img alt="Vue logo" src="./assets/logo.png" />
-      <div v-if="this.$store.state.accessToken">
-        <Search_problem></Search_problem>
-      </div>
-
-      <div v-else>
-        로그인 이전
-        <router-link to="/login">Login</router-link> |
-        <router-link to="/register">Register</router-link>
-      </div>
-      <router-view />
-    </div> -->
-    <v-sheet width="300" class="mx-auto">
-      <img alt="Vue logo" src="./assets/logo.png" />
+    <router-link to="/main">
+      <img alt="Vue logo" src="./assets/logo.png" width="200" class="mx-auto" />
+    </router-link>
+    <v-sheet width="300" class="mx-auto" v-if="status === 'landing'">
       <div class="d-flex flex-column">
         <v-btn
           color="warning"
@@ -23,6 +12,7 @@
           router
           :to="{ name: 'Login' }"
           exact
+          @click="handleStatus('login')"
         >
           Login
         </v-btn>
@@ -34,15 +24,20 @@
           block
           router
           :to="{ name: 'Register' }"
+          exact
+          @click="handleStatus('register')"
         >
           회원가입 하러가기
         </v-btn>
       </div>
     </v-sheet>
+
+    <router-view />
   </v-app>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex"
 // import Search_problem from "@/components/Search_problem.vue"
 export default {
   name: "App",
@@ -50,9 +45,16 @@ export default {
   //   Search_problem: Search_problem,
   // },
   data() {
-    return {
-      accessToken: this.$store.state.accessToken,
-    }
+    return {}
+  },
+  computed: {
+    ...mapState(["accessToken", "status"]),
+  },
+  methods: {
+    ...mapMutations(["setStatus"]),
+    handleStatus(status) {
+      this.setStatus(status)
+    },
   },
 }
 </script>

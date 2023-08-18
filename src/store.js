@@ -7,19 +7,15 @@ export default new Vuex.Store({
     accessToken: "",
     isLogin: false,
     isLoginError: false,
+    status: "landing",
   },
   getters: {},
   mutations: {
     setAccessToken: (state, accessToken) => {
       state.accessToken = accessToken
     },
-    loginSuccess(state) {
-      state.isLogin = true
-      state.isLoginError = false
-    },
-    loginError(state) {
-      state.isLogin = false
-      state.isLoginError = true
+    setStatus(state, newStatus) {
+      state.status = newStatus
     },
   },
   actions: {},
