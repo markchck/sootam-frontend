@@ -36,31 +36,26 @@ const routes = [
   {
     path: "/login",
     name: "Login",
-    beforeEnter: [
-      rejectAuthUser,
-      // (to, from, next) => changeSatatus(next, "login"),
-      // alert(store.state.status),
-    ],
+    beforeEnter: rejectAuthUser,
+    // (to, from, next) => changeSatatus(next, "login"),
+    // alert(store.state.status),
     component: Login,
   },
   {
     path: "/register",
     name: "Register",
-    beforeEnter: [
-      rejectAuthUser,
-      // (to, from, next) => changeSatatus(next, "register"),
-      // alert(store.state.status),
-    ],
+    beforeEnter: rejectAuthUser,
+    // (to, from, next) => changeSatatus(next, "register"),
+    // alert(store.state.status),
     component: Register,
   },
   {
     path: "/main",
     name: "Main",
-    beforeEnter: [
-      onlyAuthUser,
-      // (to, from, next) => changeSatatus(next, "main"),
-      // alert(store.state.status),
-    ],
+    beforeEnter: onlyAuthUser,
+    // (to, from, next) => changeSatatus(next, "main"),
+    // alert(store.state.status),
+
     component: Main,
   },
 ]

@@ -73,11 +73,11 @@ export default {
         })
 
         this.setAccessToken(response.data.stsTokenManager.accessToken)
+        // this.setStatus("main")
         localStorage.setItem(
           "accessToken",
           response.data.stsTokenManager.accessToken
         )
-
         this.$router.push("/main")
       } catch (error) {
         alert("로그인에 실패하였습니다." + `\n` + error.response.data)
