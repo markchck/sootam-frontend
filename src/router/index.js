@@ -2,7 +2,7 @@ import Vue from "vue"
 import VueRouter from "vue-router"
 import Login from "../views/Login.vue"
 import Register from "../views/Register.vue"
-// import store from "../store.js"
+import store from "../store.js"
 import Main from "../views/Main.vue"
 Vue.use(VueRouter)
 
@@ -17,45 +17,43 @@ const rejectAuthUser = (to, from, next) => {
 }
 const onlyAuthUser = (to, from, next) => {
   if (!localStorage.getItem("accessToken")) {
-    //로그인 안 된 유저니까 막아함.
-
-    alert("로그인하고 오셈")
+    alert("메인으로 가려면 로그인이 필요합니다.")
     next("/login")
   } else {
     next()
   }
 }
-// const changeSatatus = (to, from, next, status) => {
-//   alert("들어왔다.")
-//   store.commit("setStatus", status)
-//   console.log(store.state.status)
-//   next()
-// }
+const changeSatatus = (next, status) => {
+  store.commit("setStatus", status)
+  next()
+}
 
 const routes = [
   {
     path: "/login",
     name: "Login",
-    beforeEnter: rejectAuthUser,
-    // (to, from, next) => changeSatatus(next, "login"),
-    // alert(store.state.status),
+    beforeEnter(to, from, next) {
+      rejectAuthUser(to, from, next)
+      changeSatatus(next, "login")
+    },
     component: Login,
   },
   {
     path: "/register",
     name: "Register",
-    beforeEnter: rejectAuthUser,
-    // (to, from, next) => changeSatatus(next, "register"),
-    // alert(store.state.status),
+    beforeEnter(to, from, next) {
+      rejectAuthUser(to, from, next)
+      changeSatatus(next, "register")
+    },
     component: Register,
   },
   {
     path: "/main",
     name: "Main",
-    beforeEnter: onlyAuthUser,
-    // (to, from, next) => changeSatatus(next, "main"),
-    // alert(store.state.status),
-
+    beforeEnter(to, from, next) {
+      onlyAuthUser(to, from, next)
+      changeSatatus(next, "main")
+    },
     component: Main,
   },
 ]
