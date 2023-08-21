@@ -193,9 +193,16 @@ export default {
       this.similarProblems = []
     },
     async submit(year, month, testType, copyright, number) {
+      const config = {
+        headers: {
+          // accessToken: this.$store.state.accessToken,
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      }
       const { data = [] } = await axios.get(
-        `http://localhost:4000/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&copyright=${copyright}&number=${number}`
-        // `${process.env.VUE_APP_PROBLEM_API}/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&number=${number}&copyright=${copyright}`
+        `http://localhost:4000/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&copyright=${copyright}&number=${number}`,
+        config
+        // `${process.env.VUE_APP_PROBLEM_API}/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&number=${number}&copyright=${copyright}, config`
       )
 
       if (data.length === 0) {

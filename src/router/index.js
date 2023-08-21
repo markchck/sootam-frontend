@@ -10,7 +10,7 @@ const rejectAuthUser = (to, from, next) => {
   if (store.state.accessToken) {
     //이미 로그인 된 유저니까 막아함.
     alert("이미로그인")
-    next("/") // next에 경로를 적으면 리다이렉션
+    next("/main") // next에 경로를 적으면 리다이렉션
   } else {
     next() // 경로가 없으면 componet를 실행(입장을 허용)
   }
