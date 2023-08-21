@@ -67,10 +67,14 @@ export default {
         this.secretKey
       ).toString()
       try {
-        const response = await axios.post("http://localhost:3001/signIn", {
-          userEmail: this.userEmail,
-          password: hashedPassword,
-        })
+        // const response = await axios.post("http://localhost:3001/signIn", {
+        const response = await axios.post(
+          `${process.env.VUE_APP_LOGIN_API}/signIn`,
+          {
+            userEmail: this.userEmail,
+            password: hashedPassword,
+          }
+        )
 
         this.setAccessToken(response.data.stsTokenManager.accessToken)
         // this.setStatus("main")

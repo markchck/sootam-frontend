@@ -195,13 +195,12 @@ export default {
     async submit(year, month, testType, copyright, number) {
       const config = {
         headers: {
-          // accessToken: this.$store.state.accessToken,
           accessToken: localStorage.getItem("accessToken"),
         },
       }
       const { data = [] } = await axios.get(
-        `http://localhost:4000/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&copyright=${copyright}&number=${number}`,
-        // `${process.env.VUE_APP_PROBLEM_API}/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&number=${number}&copyright=${copyright}`
+        // `http://localhost:4000/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&copyright=${copyright}&number=${number}`,
+        `${process.env.VUE_APP_PROBLEM_API}/getSingleProblem/?year=${year}&month=${month}&testType=${testType}&number=${number}&copyright=${copyright}`,
         config
       )
 
@@ -217,8 +216,8 @@ export default {
       this.selectedChapter = chapter
       this.selectedUnitName = unitName
       const { data = [] } = await axios.get(
-        // `${process.env.VUE_APP_PROBLEM_API}/getSimilarProblems?chapter=${chatper}&unitName=${unitName}`
-        `http://localhost:4000/getSimilarProblems?chapter=${chapter}&unitName=${unitName}`
+        `${process.env.VUE_APP_PROBLEM_API}/getSimilarProblems?chapter=${chapter}&unitName=${unitName}`
+        // `http://localhost:4000/getSimilarProblems?chapter=${chapter}&unitName=${unitName}`
       )
       if (data.length === 0) {
         alert("해당 문제와 유사한 문제가 존재하지 않습니다.")

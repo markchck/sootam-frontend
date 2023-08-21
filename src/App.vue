@@ -3,7 +3,7 @@
     <router-link to="/main">
       <img alt="Vue logo" src="./assets/logo.png" width="200" class="mx-auto" />
     </router-link>
-    <v-sheet width="300" class="mx-auto" v-if="status === 'landing'">
+    <v-sheet width="300" class="mx-auto mt-14" v-if="status === 'landing'">
       <div class="d-flex flex-column">
         <v-btn
           color="warning"
@@ -14,7 +14,7 @@
           exact
           @click="handleStatus('login')"
         >
-          Login
+          Login하러 가기
         </v-btn>
       </div>
       <div class="d-flex flex-column">
@@ -27,7 +27,7 @@
           exact
           @click="handleStatus('register')"
         >
-          회원가입 하러가기
+          회원가입하러 가기
         </v-btn>
       </div>
     </v-sheet>
@@ -41,9 +41,6 @@ import { mapState, mapMutations } from "vuex"
 // import Search_problem from "@/components/Search_problem.vue"
 export default {
   name: "App",
-  // components: {
-  //   Search_problem: Search_problem,
-  // },
   data() {
     return {}
   },

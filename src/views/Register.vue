@@ -78,10 +78,14 @@ export default {
         this.secretKey
       ).toString()
       try {
-        const response = await axios.post("http://localhost:3001/signUp", {
-          userEmail: this.userEmail,
-          password: hashedPassword,
-        })
+        // const response = await axios.post("http://localhost:3001/signUp", {
+        const response = await axios.post(
+          `${process.env.VUE_APP_LOGIN_API}/signUp`,
+          {
+            userEmail: this.userEmail,
+            password: hashedPassword,
+          }
+        )
         console.log(response) // 서버 응답 확인
         alert("회원가입에 성공하였습니다. 로그인을 해주세요.")
         this.$router.push("/login")

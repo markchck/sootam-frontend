@@ -8,7 +8,6 @@ Vue.use(VueRouter)
 
 const rejectAuthUser = (to, from, next) => {
   if (localStorage.getItem("accessToken")) {
-    //이미 로그인 된 유저니까 막아함.
     alert("이미 로그인한 상태입니다.")
     next("/main")
   } else {
