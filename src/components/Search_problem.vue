@@ -64,8 +64,7 @@
         <v-spacer></v-spacer>
         <v-card-actions mt-3>
           <v-btn
-            color="blue darken-1"
-            text
+            color="primary"
             @click="
               downPdf(
                 selected,
@@ -108,7 +107,7 @@ export default {
 
   data() {
     return {
-      year: ["2019", "2020", "2021"],
+      year: ["2012", "2013", "2014", "2015", "2016", "2017"],
       month: ["03", "04", "05", "06", "07", "09", "10", "11"],
       copyright: ["교육청", "평가원", "수능"],
       testType: ["가", "나"],
@@ -144,11 +143,11 @@ export default {
         "29",
         "30",
       ],
-      selectedYear: "2019",
+      selectedYear: "2012",
       selectedMonth: "06",
-      selectedTestType: "나",
+      selectedTestType: "가",
       selectedCopyright: "평가원",
-      selectedNumber: "9",
+      selectedNumber: "6",
       selectedChapter: "",
       selectedUnitName: "",
       similarProblems: [],
@@ -184,12 +183,13 @@ export default {
   },
   methods: {
     initialize() {
-      this.selectedYear = "2019"
+      this.selectedYear = "2012"
       this.selectedMonth = "06"
-      this.selectedTestType = "나"
-      this.selectedNumber = "9"
+      this.selectedTestType = "가"
+      this.selectedNumber = "6"
       this.selectedChapter = ""
       this.selectedUnitName = ""
+      this.selectedCopyright = "평가원"
       this.similarProblems = []
     },
 
