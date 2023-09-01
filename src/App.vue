@@ -1,8 +1,14 @@
 <template>
   <v-app>
-    <router-link to="/main">
-      <img alt="Vue logo" src="./assets/logo.png" width="200" class="mx-auto" />
-    </router-link>
+    <!-- <router-link to="/main"> -->
+    <img
+      alt="Vue logo"
+      to="/main"
+      src="./assets/logo.png"
+      width="200"
+      class="mx-auto"
+    />
+    <!-- </router-link> -->
     <v-sheet width="300" class="mx-auto mt-14" v-if="status === 'landing'">
       <div class="d-flex flex-column">
         <v-btn

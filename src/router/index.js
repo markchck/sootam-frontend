@@ -7,7 +7,7 @@ import Main from "../views/Main.vue"
 Vue.use(VueRouter)
 
 const rejectAuthUser = (to, from, next) => {
-  if (localStorage.getItem("accessToken")) {
+  if (sessionStorage.getItem("accessToken")) {
     alert("이미 로그인한 상태입니다.")
     next("/main")
   } else {
@@ -15,7 +15,7 @@ const rejectAuthUser = (to, from, next) => {
   }
 }
 const onlyAuthUser = (to, from, next) => {
-  if (!localStorage.getItem("accessToken")) {
+  if (!sessionStorage.getItem("accessToken")) {
     alert("메인으로 가려면 로그인이 필요합니다.")
     next("/login")
   } else {

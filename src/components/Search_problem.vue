@@ -61,7 +61,7 @@
     <v-container v-if="similarProblems.length !== 0">
       <v-card-title>
         <h3 class="d-flex">유사문제</h3>
-        <v-spacer></v-spacer>
+        <!-- <v-spacer></v-spacer> -->
         <v-card-actions mt-3>
           <v-btn
             color="primary"
@@ -75,6 +75,7 @@
                 selectedNumber
               )
             "
+            class="ml-3"
           >
             PDF다운
           </v-btn>
@@ -196,7 +197,7 @@ export default {
     async submit(year, month, testType, copyright, number) {
       // const config = {
       //   headers: {
-      //     accessToken: localStorage.getItem("accessToken"),
+      //     accessToken: sessionStorage.getItem("accessToken"),
       //   },
       // }
 

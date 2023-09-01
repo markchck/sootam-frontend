@@ -78,7 +78,7 @@ export default {
 
         this.setAccessToken(response.data.stsTokenManager.accessToken)
         // this.setStatus("main")
-        localStorage.setItem(
+        sessionStorage.setItem(
           "accessToken",
           response.data.stsTokenManager.accessToken
         )
