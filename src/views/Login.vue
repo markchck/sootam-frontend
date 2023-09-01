@@ -85,7 +85,6 @@ export default {
         this.$router.push("/main")
       } catch (error) {
         alert("로그인에 실패하였습니다." + `\n` + error.response.data)
-        console.error(error)
       }
     },
   },
